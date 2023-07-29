@@ -6,5 +6,5 @@ export function getInterviewer(email) {
 }
 
 export function getAllInterviewer() {
-  return http.get(`${url}/interivewer/getAll`);
+  return http.get(`${url}/interviewer/getAll`);
 }
