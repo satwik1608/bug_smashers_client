@@ -4,11 +4,19 @@ import AdminHome from "./components/adminHome";
 import ScheduleInterview from "./components/scheduleInterview";
 import { Route, Routes, Redirect } from "react-router-dom";
 import CandidateDashboard from "./components/candidateDashboard";
+import RequireAuth from "./components/common/requireAuth";
+import { UserProvider } from "./userContext";
 import InterviewerHome from "./components/interviewerHome";
 function App() {
   return (
     <>
-      <InterviewerHome />
+      <UserProvider>
+        <Routes>
+          <Route path="/interviewerHome" element={<InterviewerHome />} />
+          <Route path="/adminHome" element={<AdminHome />} />
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </UserProvider>
     </>
   );
 }

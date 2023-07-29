@@ -2,7 +2,7 @@ import React from "react";
 
 function InterviewerDashboard({
   timeSlots,
-  peopleNames,
+  interviewersList,
   gridData,
   manageSchedule,
 }) {
@@ -20,9 +20,9 @@ function InterviewerDashboard({
           </tr>
         </thead>
         <tbody>
-          {peopleNames.map((name, rowIndex) => (
+          {interviewersList.map((data, rowIndex) => (
             <tr key={rowIndex}>
-              <td className="font-bold bg-gray-200 py-2 px-4">{name}</td>
+              <td className="font-bold bg-gray-200 py-2 px-4">{data.name}</td>
               {timeSlots.map((timeSlot, colIndex) => (
                 <td
                   key={colIndex}

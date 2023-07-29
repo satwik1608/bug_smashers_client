@@ -1,5 +1,6 @@
-import React from "react";
-
+import React, { useState } from "react";
+import { useQuery } from "react-query";
+import { useUser } from "../userContext";
 function InterviewerHome() {
   const timeSlots = [
     "9 AM",
@@ -21,12 +22,14 @@ function InterviewerHome() {
       startTime: 11,
     },
   ];
-
-  const interviewer = "John Doe"; // Static interviewer name
-
+  const { id: user, setId } = useUser();
+  console.log(user);
+  if (!user) {
+    return <div>Wait</div>;
+  }
   return (
     <div className="p-4">
-      <h2 className="text-xl font-semibold mb-4">{interviewer}</h2>
+      <h2 className="text-xl font-semibold mb-4">{user.name}</h2>
       <div className="grid grid-cols-2">
         <div className="overflow-x-auto  ">
           <table className="w-96 table-auto border-collapse">

@@ -1,6 +1,23 @@
-import React from "react";
+import React, { useRef } from "react";
+import { login } from "../../services/authService";
 
 function AdminLogin() {
+  const passwordRef = useRef("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const obj = {
+      email: "admin",
+      password: passwordRef.current.value,
+    };
+    try {
+      await login(obj);
+      window.location = "/adminHome";
+    } catch (err) {
+      alert("wrong password");
+    }
+  };
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -10,7 +27,7 @@ function AdminLogin() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" action="#" method="POST">
+        <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
             <div className="flex items-center justify-between">
               <label
@@ -34,6 +51,7 @@ function AdminLogin() {
                 name="password"
                 type="password"
                 autoComplete="current-password"
+                ref={passwordRef}
                 required
                 className="p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />

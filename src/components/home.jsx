@@ -5,8 +5,6 @@ import InterviewerLogin from "./common/interviewerLogin";
 function Home() {
   const [admin, setAdmin] = useState(false);
   const [interviewer, setInterviewer] = useState(false);
-  const [disableAdmin, setDisableAdmin] = useState(false);
-  const [disableinterviewer, setDisableInterviewer] = useState(false);
 
   const configInterviewer = () => {
     if (admin) setAdmin((admin) => !admin);

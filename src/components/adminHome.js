@@ -1,13 +1,17 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import ScheduleInterview from "./scheduleInterview";
 import { Link } from "react-router-dom";
 import InterviewerDashboard from "./interviewerDashboard";
+import { getAllInterviewer } from "../services/apiService";
 import CandidateDashboard from "./candidateDashboard";
+import { useQuery } from "react-query";
 function AdminHome() {
   const [open, setOpen] = useState(false);
   const [candidateDash, setCandidateDash] = useState(false);
   const [row, setRow] = useState();
   const [col, setCol] = useState();
+  const [interviewers, setInterviewers] = useState();
+  const [grid, setGrid] = useState();
 
   const cancelButtonRef = useRef(null);
 
@@ -50,11 +54,31 @@ function AdminHome() {
     }));
   });
 
+  const interQuery = useQuery(["interviewerDashboard"], async () => {
+    const data = await getAllInterviewer();
+    return data.data;
+  });
+
+  useEffect(() => {
+    if (interQuery.isSuccess) {
+      setInterviewers(interQuery.data);
+      setGrid(
+        interQuery.data.map((person) => {
+          return timeSlots.map((timeSlot) => ({
+            person,
+            timeSlot,
+            data: "f", // Add any data for each cell if needed
+          }));
+        })
+      );
+    }
+  }, [interQuery.data]);
+
   return (
     <>
       <InterviewerDashboard
         timeSlots={timeSlots}
-        peopleNames={peopleNames}
+        interviewersList={interviewers}
         manageSchedule={manageSchedule}
         gridData={gridData}
       />
