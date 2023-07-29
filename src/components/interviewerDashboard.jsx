@@ -9,9 +9,7 @@ function InterviewerDashboard({
   if (!interviewersList) {
     return <h1>Wait</h1>;
   }
-  // interviewersList.map((data, rowIndex) => console.log(data.name, rowIndex));
-  // console.log(timeSlots);
-  console.log("grid", gridData);
+
   return (
     <div className="grid-container w-full overflow-x-auto flex-row justify-center">
       <table className="table-fixed w-full">
@@ -27,7 +25,7 @@ function InterviewerDashboard({
         </thead>
         <tbody>
           {interviewersList.map((data, rowIndex) => (
-            <tr key={rowIndex}>
+            <tr key={data._id}>
               <td className="font-bold bg-gray-200 py-2 px-4">{data.name}</td>
               {timeSlots.map((timeSlot, colIndex) => (
                 <>
@@ -37,14 +35,16 @@ function InterviewerDashboard({
                       className="border border-gray-300 py-2 px-4 "
                       onClick={() => manageSchedule(rowIndex, colIndex)}
                     >
-                      Available
+                      <span class="px-1 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-sm">
+                        {" "}
+                        Available{" "}
+                      </span>
                     </td>
                   )}
                   {gridData[rowIndex][colIndex].data.interview && (
                     <td
                       key={colIndex}
                       className="border border-gray-300 py-2 px-4 "
-                      onClick={() => manageSchedule(rowIndex, colIndex)}
                     >
                       Interview
                     </td>
@@ -53,7 +53,6 @@ function InterviewerDashboard({
                     <td
                       key={colIndex}
                       className="border border-gray-300 py-2 px-4 "
-                      onClick={() => manageSchedule(rowIndex, colIndex)}
                     >
                       Block
                     </td>

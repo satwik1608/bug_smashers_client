@@ -1,29 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { getAllCandidate } from "../services/apiService";
 
 function CandidateDashboard() {
-  const peopleNames = [
-    "John Doe",
-    "Jane Smith",
-    "Michael Johnson",
-    "Emily Davis",
-    "Robert Wilson",
-    "Sarah Lee",
-    "David Brown",
-    "Olivia Miller",
-    "William Taylor",
-    "Ava Anderson",
-    "James Thomas",
-    "Sophia Garcia",
-    "Alexander Martinez",
-    "Isabella Robinson",
-    "Ethan Clark",
-    "Mia Hall",
-    "Benjamin Allen",
-    "Amelia Young",
-    "Jacob Hernandez",
-    "Evelyn Lopez",
-  ];
+  const [candidates, setCandidates] = useState();
 
+  const canQuery = useQuery(["allcandidates"], async () => {
+    const data = await getAllCandidate();
+    return data.data;
+  });
+
+  useEffect(() => {
+    if (canQuery.isSuccess) {
+      setCandidates(canQuery.data);
+    }
+  }, [canQuery.data]);
+  if (!candidates) {
+    return <h1>Wait</h1>;
+  }
   return (
     <div className="p-4">
       <table className="w-full table-auto border-collapse">
@@ -38,15 +32,34 @@ function CandidateDashboard() {
           </tr>
         </thead>
         <tbody>
-          {peopleNames.map((name, index) => (
+          {candidates.map((data, index) => (
             <tr
               key={index}
               className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
             >
-              <td className="border px-4 py-2">{name}</td>
-              <td className="border px-4 py-2 text-center">-</td>
-              <td className="border px-4 py-2 text-center">-</td>
-              <td className="border px-4 py-2 text-center">-</td>
+              <td className="border px-4 py-2">{data.name}</td>
+              <td className="border px-4 py-2 text-center">
+                {data.status.HR === 1
+                  ? "Qualified"
+                  : data.status.HR === 2
+                  ? "Not yet scheduled"
+                  : "Rejected"}
+              </td>
+
+              <td className="border px-4 py-2 text-center">
+                {data.status.TECH === 1
+                  ? "Qualified"
+                  : data.status.TECH === 2
+                  ? "Not yet scheduled"
+                  : "Rejected"}
+              </td>
+              <td className="border px-4 py-2 text-center">
+                {data.status.MANAGER === 1
+                  ? "Qualified"
+                  : data.status.MANAGER === 2
+                  ? "Not yet scheduled"
+                  : "Rejected"}
+              </td>
             </tr>
           ))}
         </tbody>

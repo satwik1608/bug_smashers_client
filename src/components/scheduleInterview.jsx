@@ -1,6 +1,8 @@
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { useQuery } from "react-query";
+import { getAllCandidate, schedule } from "../services/apiService";
 
 export default function ScheduleInterview({
   open,
@@ -8,36 +10,49 @@ export default function ScheduleInterview({
   cancelButtonRef,
   row,
   col,
+  interviewer,
 }) {
   // Sample local array of students
-  const studentsData = [
-    { id: 1, name: "John Doe" },
-    { id: 2, name: "Jane Smith" },
-    { id: 3, name: "Michael Johnson" },
-    { id: 4, name: "Maria Jones" },
-    { id: 5, name: "Peter Williams" },
-    { id: 6, name: "Sarah Brown" },
-    { id: 7, name: "David Green" },
-    { id: 8, name: "Emily White" },
-    { id: 9, name: "James Black" },
-    { id: 10, name: "Jessica Blue" },
-    { id: 11, name: "Robert Red" },
-    { id: 12, name: "Jennifer Pink" },
-    { id: 13, name: "William Yellow" },
-    { id: 14, name: "Elizabeth Green" },
-    { id: 15, name: "Thomas Blue" },
-    { id: 16, name: "Catherine Red" },
-    { id: 17, name: "Michael Pink" },
-    { id: 18, name: "Sarah Yellow" },
-    { id: 19, name: "David Green" },
-    { id: 20, name: "Emily White" },
-  ];
+  const [candidates, setCandidates] = useState();
+
+  const candidateQuery = useQuery(["candidates"], async () => {
+    const data = await getAllCandidate(interviewer.type, true);
+    return data.data;
+  });
 
   const [selectedStudent, setSelectedStudent] = useState(null);
-  console.log(selectedStudent);
+
+  const handleSchedule = async () => {
+    if (!selectedStudent) {
+      return;
+    }
+    const obj = {
+      email: interviewer.email,
+      timeSlot: {
+        start: col + 9,
+        end: col + 10,
+      },
+      candidateId: selectedStudent._id,
+    };
+    try {
+      await schedule(obj);
+      setOpen(false);
+    } catch {}
+  };
+
+  useEffect(() => {
+    if (candidateQuery.isSuccess) {
+      console.log(candidateQuery.data);
+      setCandidates(candidateQuery.data);
+    }
+  }, [candidateQuery.data]);
+
   const handleStudentSelect = (student) => {
     setSelectedStudent(student);
   };
+  if (!candidates) {
+    return <h1>Wait</h1>;
+  }
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
@@ -92,6 +107,7 @@ export default function ScheduleInterview({
                   </button>
                   <button
                     type="button"
+                    onClick={handleSchedule}
                     class="text-white ml-5 bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                   >
                     Schedule Interview
@@ -99,9 +115,9 @@ export default function ScheduleInterview({
 
                   <div className="mt-4">
                     <p className="font-bold text-xl mb-2">Select a Student:</p>
-                    {studentsData.map((student) => (
+                    {candidates.map((student) => (
                       <button
-                        key={student.id}
+                        key={student._id}
                         className={`w-full text-left mt-2 p-2 rounded ${
                           selectedStudent === student
                             ? "bg-blue-500 text-white"

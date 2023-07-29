@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import ScheduleInterview from "./scheduleInterview";
 import { Link } from "react-router-dom";
 import InterviewerDashboard from "./interviewerDashboard";
-import { getAllInterviewer } from "../services/apiService";
+import { getAllInterviewer, smarty } from "../services/apiService";
 import CandidateDashboard from "./candidateDashboard";
 import { useQuery } from "react-query";
 function AdminHome() {
@@ -12,6 +12,7 @@ function AdminHome() {
   const [col, setCol] = useState();
   const [interviewers, setInterviewers] = useState();
   const [grid, setGrid] = useState();
+  const [upd, setUpd] = useState(0);
 
   const cancelButtonRef = useRef(null);
 
@@ -20,18 +21,6 @@ function AdminHome() {
     setCol(col);
     setOpen((open) => !open);
   };
-
-  const peopleNames = [
-    "John",
-    "Alice",
-    "Bob",
-    "Emily",
-    "David",
-    "Sophia",
-    "Michael",
-    "Olivia",
-    "Daniel",
-  ];
 
   const timeSlots = [
     "9:00 AM",
@@ -46,10 +35,19 @@ function AdminHome() {
     "6:00 PM",
   ];
 
-  const interQuery = useQuery(["interviewerDashboard"], async () => {
+  const interQuery = useQuery(["interviewerDashboard", open, upd], async () => {
     const data = await getAllInterviewer();
     return data.data;
   });
+
+  const magic = async () => {
+    const obj = {
+      currentTime: 9,
+    };
+    const data = await smarty(obj);
+    console.log("God", data.data);
+    setUpd((upd) => 1 - upd);
+  };
 
   useEffect(() => {
     if (interQuery.isSuccess) {
@@ -87,7 +85,7 @@ function AdminHome() {
     }
   }, [interQuery.data]);
 
-  if (interQuery.isSuccess) {
+  if (interviewers) {
     return (
       <>
         <InterviewerDashboard
@@ -105,6 +103,7 @@ function AdminHome() {
           </button>
           <button
             type="button"
+            onClick={magic}
             class="ml-5 mt-10 focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900"
           >
             Smart Schedule
@@ -124,6 +123,7 @@ function AdminHome() {
             cancelButtonRef={cancelButtonRef}
             row={row}
             col={col}
+            interviewer={interviewers[row]}
           />
         )}
         {candidateDash && <CandidateDashboard />}
