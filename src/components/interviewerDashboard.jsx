@@ -46,7 +46,10 @@ function InterviewerDashboard({
                       key={colIndex}
                       className="border border-gray-300 py-2 px-4 "
                     >
-                      Interview
+                      <span class="px-2 py-1 font-semibold leading-tight text-blue-700 bg-gray-100 rounded-sm">
+                        {" "}
+                        Interview{" "}
+                      </span>
                     </td>
                   )}
                   {gridData[rowIndex][colIndex].data.block && (
@@ -54,7 +57,10 @@ function InterviewerDashboard({
                       key={colIndex}
                       className="border border-gray-300 py-2 px-4 "
                     >
-                      Block
+                      <span class="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-sm">
+                        {" "}
+                        Blocked{" "}
+                      </span>
                     </td>
                   )}
                 </>

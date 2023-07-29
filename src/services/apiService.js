@@ -35,3 +35,7 @@ export function candidateVerdict(obj) {
 export function smarty(obj) {
   return http.post(`${url}/interviewer/smartFill`, obj);
 }
+
+export function blockTime(obj) {
+  return http.post(`${url}/interviewer/makeSlotBusy`, obj);
+}

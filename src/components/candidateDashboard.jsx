@@ -39,26 +39,59 @@ function CandidateDashboard() {
             >
               <td className="border px-4 py-2">{data.name}</td>
               <td className="border px-4 py-2 text-center">
-                {data.status.HR === 1
-                  ? "Qualified"
-                  : data.status.HR === 2
-                  ? "Not yet scheduled"
-                  : "Rejected"}
+                {data.status.HR === 1 ? (
+                  <span class="px-1 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-sm">
+                    {" "}
+                    Qualified{" "}
+                  </span>
+                ) : data.status.HR === 2 ? (
+                  <span class="px-2 py-1 font-semibold leading-tight text-blue-700 bg-gray-100 rounded-sm">
+                    {" "}
+                    In Process{" "}
+                  </span>
+                ) : (
+                  <span class="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-sm">
+                    {" "}
+                    Rejected{" "}
+                  </span>
+                )}
               </td>
 
               <td className="border px-4 py-2 text-center">
-                {data.status.TECH === 1
-                  ? "Qualified"
-                  : data.status.TECH === 2
-                  ? "Not yet scheduled"
-                  : "Rejected"}
+                {data.status.TECH === 1 ? (
+                  <span class="px-1 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-sm">
+                    {" "}
+                    Qualified{" "}
+                  </span>
+                ) : data.status.TECH === 2 ? (
+                  <span class="px-2 py-1 font-semibold leading-tight text-blue-700 bg-gray-100 rounded-sm">
+                    {" "}
+                    In Process{" "}
+                  </span>
+                ) : (
+                  <span class="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-sm">
+                    {" "}
+                    Rejected{" "}
+                  </span>
+                )}
               </td>
               <td className="border px-4 py-2 text-center">
-                {data.status.MANAGER === 1
-                  ? "Qualified"
-                  : data.status.MANAGER === 2
-                  ? "Not yet scheduled"
-                  : "Rejected"}
+                {data.status.MANAGER === 1 ? (
+                  <span class="px-1 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-sm">
+                    {" "}
+                    Qualified{" "}
+                  </span>
+                ) : data.status.MANAGER === 2 ? (
+                  <span class="px-2 py-1 font-semibold leading-tight text-blue-700 bg-gray-100 rounded-sm">
+                    {" "}
+                    In Process{" "}
+                  </span>
+                ) : (
+                  <span class="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-sm">
+                    {" "}
+                    Rejected{" "}
+                  </span>
+                )}
               </td>
             </tr>
           ))}

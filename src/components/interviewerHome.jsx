@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { useUser } from "../userContext";
+import { BiBlock } from "react-icons/bi";
 import {
   acceptInvite,
+  blockTime,
   candidateVerdict,
   rejectInvite,
 } from "../services/apiService";
@@ -111,6 +113,19 @@ function InterviewerHome() {
     } catch {}
   };
 
+  const blockSlot = async (time) => {
+    const obj = {
+      email: user.email,
+      timeSlot: {
+        start: time + 9,
+        end: time + 9,
+      },
+    };
+    const data = await blockTime(obj);
+
+    setId(data.data);
+  };
+
   if (!user || !status) {
     return <div>Wait</div>;
   }
@@ -142,10 +157,16 @@ function InterviewerHome() {
                   <td class="px-4 py-3 text-ms font-semibold border">
                     <>
                       {status[index] === 0 && (
-                        <span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-sm">
-                          {" "}
-                          Free{" "}
-                        </span>
+                        <div className="flex justify-between	">
+                          <span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-sm">
+                            {" "}
+                            Free
+                          </span>
+                          <BiBlock
+                            cursor="pointer"
+                            onClick={() => blockSlot(index)}
+                          />
+                        </div>
                       )}
                       {status[index] === 1 && (
                         <span class="px-2 py-1 font-semibold leading-tight text-orange-700 bg-gray-100 rounded-sm">
