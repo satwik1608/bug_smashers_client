@@ -59,6 +59,7 @@ function AdminHome() {
             available: false,
             interview: false,
             block: false,
+            interviewDone: false,
           }, // Add any data for each cell if needed
         }));
       });
@@ -77,6 +78,12 @@ function AdminHome() {
           tempGrid[rowIndex][
             islots[i].timeSlot.start - 9
           ].data.interview = true;
+        }
+        let idslots = person.interviewDoneSlots;
+        for (let i in idslots) {
+          tempGrid[rowIndex][
+            idslots[i].timeSlot.start - 9
+          ].data.interviewDone = true;
         }
       });
       setGrid(tempGrid);

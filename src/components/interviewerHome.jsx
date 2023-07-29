@@ -22,14 +22,6 @@ function InterviewerHome() {
     "5 PM",
     "6 PM",
   ];
-  const dummyData = [
-    {
-      startTime: 10,
-    },
-    {
-      startTime: 11,
-    },
-  ];
   const { id: user, setId } = useUser();
   const [status, setStatus] = useState();
   const [availability, setAvailabilty] = useState();
@@ -44,13 +36,18 @@ function InterviewerHome() {
         temp[aSlot[i].start - 9] = 0;
       }
       let iSlot = user.interviewSlots;
+      console.log(["iSlot", iSlot]);
       for (let i in iSlot) {
         temp[iSlot[i].timeSlot.start - 9] = 1;
-        temp2[iSlot[i].timeSlot.start - 9] = 1;
+        if (iSlot[i].notify === 0) temp2[iSlot[i].timeSlot.start - 9] = 1;
       }
       let bSlot = user.blockedSlots;
       for (let i in bSlot) {
         temp[bSlot[i].start - 9] = 2;
+      }
+      let idSlot = user.interviewDoneSlots;
+      for (let i in idSlot) {
+        temp[idSlot[i].timeSlot.start - 9] = 3;
       }
       setAvailabilty(temp2);
       setStatus(temp);
@@ -70,10 +67,7 @@ function InterviewerHome() {
     };
     try {
       const data = await acceptInvite(obj);
-      let temp = availability;
-      temp[time] = 0;
       setId(data.data);
-      setAvailabilty(temp);
     } catch {}
   };
 
@@ -87,10 +81,7 @@ function InterviewerHome() {
     };
     try {
       const data = await rejectInvite(obj);
-      let temp = availability;
-      temp[time] = 0;
       setId(data.data);
-      setAvailabilty(temp);
     } catch {}
   };
 
@@ -105,11 +96,7 @@ function InterviewerHome() {
     };
     try {
       const data = await candidateVerdict(obj);
-      let temp = status[time];
-      temp[time] = 0;
-
       setId(data.data);
-      setStatus(temp);
     } catch {}
   };
 
@@ -118,7 +105,7 @@ function InterviewerHome() {
       email: user.email,
       timeSlot: {
         start: time + 9,
-        end: time + 9,
+        end: time + 10,
       },
     };
     const data = await blockTime(obj);
@@ -169,7 +156,7 @@ function InterviewerHome() {
                         </div>
                       )}
                       {status[index] === 1 && (
-                        <span class="px-2 py-1 font-semibold leading-tight text-orange-700 bg-gray-100 rounded-sm">
+                        <span class="px-2 py-1 font-semibold leading-tight text-pink-700 bg-gray-100 rounded-sm">
                           {" "}
                           Interview{" "}
                         </span>
@@ -180,10 +167,16 @@ function InterviewerHome() {
                           Blocked{" "}
                         </span>
                       )}
+                      {status[index] === 3 && (
+                        <span class="px-2 py-1 font-semibold leading-tight text-blue-700 bg-red-100 rounded-sm">
+                          {" "}
+                          Interviewed{" "}
+                        </span>
+                      )}
                     </>
                   </td>
                   <td class="px-4 py-3 text-xs border">
-                    {status[index] === 1 && (
+                    {status[index] === 1 && availability[index] === 0 && (
                       <div class="flex ">
                         <div class="m-2">
                           <button

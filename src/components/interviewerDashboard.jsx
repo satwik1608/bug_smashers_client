@@ -63,6 +63,17 @@ function InterviewerDashboard({
                       </span>
                     </td>
                   )}
+                  {gridData[rowIndex][colIndex].data.interviewDone && (
+                    <td
+                      key={colIndex}
+                      className="border border-gray-300 py-2 px-4 "
+                    >
+                      <span class="px-2 py-1 font-semibold leading-tight text-pink-700 bg-red-100 rounded-sm">
+                        {" "}
+                        Interviewed{" "}
+                      </span>
+                    </td>
+                  )}
                 </>
               ))}
             </tr>
