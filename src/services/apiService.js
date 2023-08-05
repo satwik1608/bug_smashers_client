@@ -1,5 +1,5 @@
 import http from "./httpService";
-const url = "http://localhost:1337";
+const url = "https://amused-pleat-goat.cyclic.app";
 
 export function getInterviewer(email) {
   return http.post(`${url}/interviewer/getOne`, email);
