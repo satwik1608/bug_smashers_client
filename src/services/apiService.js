@@ -39,3 +39,7 @@ export function smarty(obj) {
 export function blockTime(obj) {
   return http.post(`${url}/interviewer/makeSlotBusy`, obj);
 }
+
+export function register(obj) {
+  return http.post(`${url}/interviewer/create`, obj);
+}

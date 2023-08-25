@@ -7,6 +7,7 @@ import CandidateDashboard from "./components/candidateDashboard";
 import RequireAuth from "./components/common/requireAuth";
 import { UserProvider } from "./userContext";
 import InterviewerHome from "./components/interviewerHome";
+import InterviewerForm from "./components/interviewerForm";
 function App() {
   return (
     <>
@@ -15,6 +16,7 @@ function App() {
           <Route path="/interviewerHome" element={<InterviewerHome />} />
           <Route path="/adminHome" element={<AdminHome />} />
           <Route path="/" element={<Home />} />
+          <Route path="/register" element={<InterviewerForm />} />
         </Routes>
       </UserProvider>
     </>
