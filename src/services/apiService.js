@@ -1,5 +1,5 @@
 import http from "./httpService";
-const url = "https://amused-pleat-goat.cyclic.app";
+const url = "https://bug-smashers-hcwy.onrender.com";
 
 export function getInterviewer(email) {
   return http.post(`${url}/interviewer/getOne`, email);

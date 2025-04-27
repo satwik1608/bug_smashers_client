@@ -2,7 +2,7 @@ import jwtDecode from "jwt-decode";
 import http from "./httpService";
 // const url = "https://shiny-ox-leotard.cyclic.app";
 
-const url = "https://amused-pleat-goat.cyclic.app";
+const url = "https://bug-smashers-hcwy.onrender.com";
 
 export function getJwt() {
   return localStorage.getItem("token");
